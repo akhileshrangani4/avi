@@ -1,0 +1,55 @@
+---
+title: 'tambo vs vercel json-render'
+publishedAt: '2026-03-01'
+summary: 'a deep comparison of tambo and vercel json-render - two frameworks for ai-generated ui in react, and how their architectures diverge'
+keywords: 'tambo, json-render, vercel, generative ui, ai ui framework, react ai components, tambo vs json-render, vercel labs'
+---
+
+vercel labs recently released [json-render](https://github.com/vercel-labs/json-render), a framework for generating ui from ai. since i work on [tambo](https://github.com/tambo-ai/tambo), which does something similar, i wanted to break down how the two approaches actually differ.
+
+both start from the same premise - you define a catalog of components with schemas, the ai picks from them, and something renders the result. but the execution is pretty different.
+
+## how json-render works
+
+json-render is spec-based. the ai generates a json blob describing a tree of components with props. a renderer takes that spec and turns it into actual ui. the spec format looks like this:
+
+```json
+{
+  "root": "card-1",
+  "elements": {
+    "card-1": { "type": "Card", "props": { "title": "hello" }, "children": [] }
+  }
+}
+```
+
+the selling point is cross-platform rendering. you define your catalog once and render to react, vue, react native, remotion (video), pdf, email, even images via satori. that's genuinely cool if you need the same ai-generated layout across multiple targets.
+
+they also ship a shadcn adapter with 36 pre-built components so you can get started without defining everything from scratch.
+
+## how tambo works
+
+tambo is react-native in the framework sense, not the mobile sense. the ai doesn't generate a json spec that gets interpreted - it streams props directly into your actual react components. your components are the source of truth, not an intermediate spec format.
+
+you register components with zod schemas, same as json-render. but when the ai decides to render something, it streams the props token by token into your component. the component renders progressively as data arrives - no intermediate json step, no separate renderer.
+
+tambo also handles the full agent loop - conversation state, tool execution, mcp server connections, context management. it's an sdk for building ai features, not just a rendering layer.
+
+## where they actually diverge
+
+**rendering model.** json-render generates a spec, then renders it. tambo streams props into live components. the spec approach is cleaner for cross-platform, but the streaming approach gives you progressive rendering without extra work. your component just gets partial props and handles it.
+
+**scope.** json-render is focused on the rendering problem - turn ai output into ui safely. tambo is a full agent toolkit - it manages threads, tools, context, and component rendering together. if you just need safe rendering, json-render is more focused. if you're building an ai feature with conversations and tool use, tambo does more out of the box.
+
+**interactivity.** tambo distinguishes between generative components (rendered once per response) and interactable components (persist across the conversation, update over time). a task board that the ai can keep modifying is a first-class concept. json-render treats every render as a fresh spec.
+
+**platform.** json-render is cross-platform by design - react, vue, native, pdf, video. tambo is react-only. if you need to render the same ai-generated ui as a pdf and a react component, json-render wins that easily.
+
+## which one to use
+
+if you want a rendering layer that works across platforms and you're handling the ai/agent logic yourself, json-render is a good fit. it's well-scoped and the cross-platform story is strong.
+
+if you're building a react app where an ai agent needs to render components, manage conversations, call tools, and maintain state across interactions, tambo gives you more of that stack.
+
+they're not really competitors - they solve different slices of the same problem. you could even use both if you wanted tambo's agent layer with json-render's cross-platform rendering, though nobody's done that yet as far as i know.
+
+the real takeaway is that generative ui is becoming a real category. a year ago this was a novel concept. now there are multiple serious approaches to it, which means the abstraction is probably right.

@@ -1,0 +1,48 @@
+---
+title: 'building a cloud ide from scratch'
+publishedAt: '2026-01-15'
+summary: 'how we built gitwit sandbox - a browser-based cloud ide with ai copilot, real-time collaboration, and live preview'
+keywords: 'cloud ide, gitwit, sandbox, ai copilot, browser ide, real-time collaboration, code editor, web ide'
+---
+
+[sandbox](https://sandbox.gitwit.dev/) is a cloud-based code editor i've been building with [james murdza](https://github.com/jamesmurdza) as part of [gitwit](https://www.gitwit.dev/). think of it as a browser-based vscode with an ai copilot baked in - you can write code, see live previews, run terminals, and have the ai generate or edit files directly in your project.
+
+the whole thing is [open source](https://github.com/gitwitorg/gitwit) and has been one of the most technically dense projects i've worked on.
+
+## what it does
+
+you open a project in the browser and get a full dev environment - file tree, code editor, terminal, live preview, and an ai chat panel. the ai can read your files, search your codebase, and make edits using inline diffs. everything runs in cloud sandboxes via [e2b](https://e2b.dev/) so there's no local setup.
+
+it supports multiple ai providers - anthropic, openai, openrouter, aws bedrock. users bring their own api keys, which we encrypt with aes-256-gcm.
+
+## the ai chat rewrite
+
+one of the bigger things i did recently was ripping out our custom streaming implementation and migrating to the ai sdk's `useChat` hook. our old approach had a hand-rolled fetch/readablestream pipeline with manual abort controllers, concurrency guards, and throttle logic. it worked but it was fragile.
+
+the migration to ai sdk v6 was not trivial. v6 changed a lot of apis - `append()` became `sendMessage()`, `parameters` became `inputSchema` for tools, messages switched from content strings to a parts-based format. i also had to deal with stale closures where the request body callback was capturing old state instead of reading fresh values from refs.
+
+after that i added multi-step tool calling so the ai can read files, list directories, and search the codebase before responding. tool invocations render inline in the chat as collapsible elements so you can see what the ai looked at.
+
+## visual diffs and code blocks
+
+the ai copilot uses aider-style search/replace markers when editing files. i built a parser that turns those raw diff markers into color-coded visual diffs with gutter indicators - green for additions, red for removals. way easier to review than reading raw `<<<<<<< SEARCH` blocks.
+
+also added collapsible code blocks in chat messages - they collapse to about four lines with a gradient fade and expand on click. when the ai is still streaming, there's a shimmer bar at the bottom so you know it's not done yet.
+
+## the status bar and panel system
+
+built a vscode-style status bar at the bottom with toggle buttons for sidebar, terminal, and chat panels. the buttons reactively sync with panel visibility through dockview events. also added platform-aware keyboard shortcuts - detects mac vs windows/linux and shows the right modifier keys.
+
+small detail but it makes the whole thing feel like a real editor instead of a toy.
+
+## what made this hard
+
+cloud ides have a lot of moving parts. the editor is monaco, terminals run in e2b sandboxes over websockets, live previews need to proxy sandbox ports to the browser, and the ai needs access to your file tree and editor state to make useful suggestions.
+
+the real-time collab layer adds another dimension. multiple users editing the same file, terminal sessions shared across connections, chat context that needs to stay in sync. most of the bugs i've fixed have been state synchronization issues where two systems disagree about what's current.
+
+## current state
+
+the project has close to a thousand commits now and supports react, next.js, vanilla js, php, and streamlit templates out of the box. it's been a good place to learn how all the pieces of a modern dev tool fit together - editor protocols, sandbox orchestration, ai streaming, auth, and deployment.
+
+if you want to try it, [sandbox.gitwit.dev](https://sandbox.gitwit.dev/) is live. or clone the [repo](https://github.com/gitwitorg/gitwit) and run it locally.

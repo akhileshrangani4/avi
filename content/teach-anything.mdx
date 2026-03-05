@@ -1,0 +1,28 @@
+---
+title: 'teach anything and the case for open-source education tools'
+publishedAt: '2025-12-10'
+summary: 'how teach anything grew to 250+ professors and got featured in the new york times - building open-source rag chatbots for education'
+keywords: 'teach anything, open source education, rag, ai chatbot, education technology, edtech, new york times, gw digital humanities'
+---
+
+[teach anything](https://www.teachanything.ai/) started as a research project at gw digital humanities institute with [prof. alexa alice joubin](https://aialexa.org). the pitch was simple  - let professors upload their course materials and spin up an ai chatbot for their students. no vendor lock-in, no per-seat pricing, just open-source rag that works.
+
+it's now used by 250+ professors and got [featured in the new york times](https://www.teachanything.ai/assets/press/nyt-article.pdf), which was surreal.
+
+## how it works
+
+professors upload syllabi, lecture notes, pdfs, whatever. the system chunks and embeds the content, then students can ask questions and get answers grounded in their actual course material  - not generic chatgpt responses.
+
+the stack is next.js, supabase for auth and storage, and a rag pipeline that handles document processing, vector search, and response generation. everything runs on the professor's terms  - they control what content the bot can reference and how it responds.
+
+## what i learned
+
+**rag is harder than it looks.** chunking strategy matters way more than the model you use. split too aggressively and you lose context. split too conservatively and retrieval gets noisy. we went through probably five different chunking approaches before landing on something that worked across disciplines.
+
+**open-source matters here.** universities are paranoid about student data going to third-party ai services (rightfully so). self-hostable, open-source tooling removes that blocker entirely. some schools that said no to chatgpt integrations said yes to this because they can audit the code and control the data.
+
+## what's next
+
+still actively maintaining it. the main thing i want to improve is multi-modal support  - letting students ask about diagrams, charts, images in lecture slides. that's a harder retrieval problem but it's where the real value is for stem courses.
+
+the repo is [on github](https://github.com/akhileshrangani4/teachanything) if you want to run it yourself or contribute.

@@ -1,0 +1,36 @@
+---
+title: 'three hackathons, three very different projects'
+publishedAt: '2026-02-28'
+summary: 'a space game, a conspiracy board, and a government bid finder - building three ai projects back to back at hackathons'
+keywords: 'hackathon, ai projects, nova explorer, space game, generative ui, hackathon projects 2026'
+---
+
+february was hackathon season for me. built three things back to back, each pretty different from the last.
+
+## nova explorer  - talk to your spaceship
+
+built an ai-powered space exploration game where you navigate a procedurally generated galaxy by talking to your ship's ai. instead of clicking buttons, you give commands like "scan that planet" or "mine the asteroid field" and the ui generates itself around your decisions.
+
+stack was next.js, tambo for generative ui, supabase for game state, and daytona sdk for sandboxed code execution (players can run scripts inside the game). the voice layer uses elevenlabs for the ship ai's responses.
+
+the fun part was making it feel like a game and not a chatbot  - procedural galaxy generation, resource systems, encounters. the hard part was keeping game state consistent when the ai is making ui decisions on the fly.
+
+## conspiracy board agent  - connecting unrelated things
+
+this one was pure chaos. built an autonomous agent at the aws agents hackathon that takes two completely unrelated topics and builds an increasingly elaborate conspiracy board connecting them.
+
+the agent loops through web searches (tavily), entity extraction (gpt), graph storage (neo4j), and image analysis (reka)  - each round adding more nodes and edges to the conspiracy. you watch the graph grow in real time as the connections get more and more absurd.
+
+python backend with fastapi, vis.js for the graph visualization. the best part was the conspiratorial commentary the agent generates as it "discovers" connections.
+
+## ychts  - government bid finder
+
+built at hack the stackathon at yc. it's a conversational tool for contractors to find government bid opportunities. you can search by panning a map or just asking "find electrical projects near me."
+
+the system scrapes procurement portals with firecrawl, displays results on an interactive maplibre map with clustering, and lets you analyze bid documents with ai. tambo handles the generative ui, openrouter for the language model, reducto for pdf parsing.
+
+## pattern
+
+looking at these three projects, there's a clear thread  - all of them use ai to generate ui dynamically instead of building static screens. that's not a coincidence. it's what i work on every day at tambo, and hackathons are the best way to stress test your own tools.
+
+each one broke the sdk in a different way, which is exactly what you want.

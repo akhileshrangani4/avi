@@ -1,0 +1,51 @@
+---
+title: 'what i actually do at tambo'
+publishedAt: '2026-03-06'
+summary: 'what it looks like to be a founding engineer on tambo, an open-source generative ui sdk for react with 11k github stars'
+keywords: 'tambo, generative ui, react sdk, open source, founding engineer, ai components, tambo ai'
+---
+
+i've been building [tambo](https://github.com/tambo-ai/tambo) for a while now  - it's an open-source generative UI toolkit for react. the idea is simple  - you register your components with zod schemas, and an ai agent can pick and render them based on what a user asks for.
+
+so instead of the ai just returning text, it returns actual interactive ui. charts, forms, dashboards, whatever you've registered.
+
+## what that looks like day to day
+
+as a founding engineer at a small startup, "what i do" changes week to week. there's no single lane. some weeks i'm deep in the sdk internals, other weeks i'm shipping a CLI feature, fixing auth flows, or writing docs. here's a rough breakdown of where my time goes.
+
+**sdk and core infrastructure**  - the component registry, streaming infrastructure, tool execution, error recovery. this is the backbone of tambo and where the hardest bugs live. things like making sure content blocks render in the right order from the model response, or fixing threads that get stuck in a loading state after tool call failures.
+
+**cli tooling**  - i built out our CLI from scratch  - device auth flow, framework detection so it picks the right env var prefix for next vs vite, non-interactive mode so agents can run it without hanging on prompts, and a full-send mode that scaffolds everything in one shot. recently added vite support with tailwind v4 detection.
+
+**skills and plugin system**  - we have a plugin for claude code that gives it knowledge about how to build with tambo. i built the initial version, then went through a big consolidation  - we had too many granular skills that confused people, so i restructured everything into two clear entry points with reference docs that the agent pulls in based on context. a lot of this is about making the authoring experience clean so the agent actually has the right information when someone asks it to build something.
+
+**auth and onboarding**  - built the device auth flow for the CLI, set up oauth token resolution, wired up google auth with user metadata, built the onboarding wizard with referral tracking. small things like making sure the CLI auth page auto-closes after login, or redirecting auth between subdomains. these aren't glamorous but they're the difference between a product that feels polished and one that doesn't.
+
+**analytics**  - wired up posthog for both frontend and backend  - cross-subdomain tracking on the web side, a backend analytics service for api events. also added anonymous telemetry to the CLI so we can see which commands and skills people actually use.
+
+**docs**  - a surprising amount of my time goes into documentation. fixing incorrect types, adding missing reference pages for hooks and components, making sure the react sdk docs match what the code actually does. bad docs are a silent churn machine  - people try your thing, hit a wrong example, and leave.
+
+**mcp and integrations**  - fixed oauth flows for mcp servers, added support for custom headers, handled edge cases like "method not found" errors when no servers are configured. also added cerebras as an ai provider.
+
+## the hard problems
+
+generative ui sounds straightforward until you actually try to build it. some things that are surprisingly tricky:
+
+- **streaming props**  - the ai generates component props token by token. you need to render partial state gracefully without flickering or layout shifts
+- **component selection**  - the agent needs to pick the right component from a registry. get this wrong and you're showing a bar chart when someone asked for a summary
+- **persistence**  - some components are one-shot (show me a chart) and some need to stick around and update (a task board). handling both in the same system is annoying
+- **cancellation**  - user interrupts mid-stream, you need to clean up gracefully without orphaned state
+
+## the startup part
+
+the thing about being at a startup this size is that shipping code is maybe half the job. the other half is figuring out what to ship, when to launch it, and making sure people actually see it. we've been getting more disciplined about working backwards from a clear demo and definition of done before starting anything  - too easy to build something that works but isn't something users would actually want to use.
+
+we also dogfood everything. if we're building a new sdk feature, someone on the team builds a real app with it first. that's how you find the gaps between what you built and what people actually need.
+
+## why this matters
+
+most ai products are chat interfaces. text in, text out. that works for some things but it's a terrible way to interact with data, dashboards, or anything visual. generative ui lets the ai actually build the interface on the fly.
+
+we hit 11k stars on github which is cool but the real signal is the stuff people are building with it  - internal tools, customer support flows, dev dashboards. the sdk disappears and the app is what matters.
+
+that's kind of the whole point.

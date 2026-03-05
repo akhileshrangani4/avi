@@ -1,0 +1,34 @@
+---
+title: 'building a portfolio you can talk to'
+publishedAt: '2025-07-07'
+summary: 'how i built a voice-first portfolio with generative ui, recruiter mode, and real-time audio streaming in react'
+keywords: 'voice portfolio, generative ui, voice interface, react portfolio, ai portfolio, interactive portfolio, web audio api'
+---
+
+i wanted my portfolio to do more than sit there. so i built one that talks back.
+
+[heyavi.me](https://heyavi.me) looks like a normal site if you just scroll through it. but click the mic and you can have a full conversation  - ask about my projects, my work, or drop a job posting link and it'll break down how i match the role.
+
+## how it works
+
+the conversational layer runs on [tambo](https://tambo.co)  - same generative UI sdk i work on day to day. the ai doesn't just reply with text. it renders actual react components  - project cards, photo grids, resume sections  - based on what you ask.
+
+voice goes through openai whisper for transcription, elevenlabs for speech synthesis. the tricky part was the pipeline in between  - voice activity detection, silence thresholds, figuring out when someone's actually done talking vs just pausing.
+
+for job analysis, [firecrawl](https://firecrawl.dev) scrapes the posting, the ai parses requirements against my background, and it shows a match breakdown card. kind of like a recruiter copilot except it's biased in my favor.
+
+## the annoying parts
+
+audio feedback loops were the biggest pain. had to build a global audio manager to track what's playing and kill previous tts when new messages arrive. mobile browser permissions for mic access are a whole separate nightmare.
+
+the hardest design decision was timing  - when should the ai show a component vs just talk? too eager and it feels spammy, too conservative and you miss the point of generative ui. ended up tuning the system prompt to be more restrained.
+
+## update
+
+i've since stripped all the voice and ai stuff out of the portfolio. it was a fun experiment but running whisper, elevenlabs, and tambo on every visit adds up fast and i'd rather not burn credits on a personal site. the current version is just a clean, minimal next.js site  - no mic button, no talking.
+
+the voice version was a fun proof of concept but the code's been cleaned out since.
+
+## takeaway
+
+the interesting thing about this project wasn't the ai part  - it was making it feel natural. most ai features feel bolted on. the goal here was to make the conversation feel like it belongs, not like a demo. but also  - know when to kill your darlings. sometimes a simple static site is the right call.
