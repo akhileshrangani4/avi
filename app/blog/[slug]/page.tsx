@@ -30,7 +30,7 @@ export async function generateMetadata({
   } = post.metadata;
   let ogImage = image
     ? `${userData.site}${image}`
-    : `${userData.site}/og?title=${title}`;
+    : `${userData.site}/og?title=${encodeURIComponent(title)}&summary=${encodeURIComponent(description)}`;
 
   return {
     title,

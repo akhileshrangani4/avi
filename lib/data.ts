@@ -4,5 +4,5 @@ export const userData = {
   twitter: 'https://twitter.com/akhileshrangani',
   linkedin: 'https://www.linkedin.com/in/akhileshrangani/',
   github: 'https://github.com/akhileshrangani4',
-  site: 'https://heyavi.me',
+  site: 'https://avi.mn',
 };
