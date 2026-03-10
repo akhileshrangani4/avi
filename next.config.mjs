@@ -33,6 +33,12 @@ const nextConfig = {
   headers() {
     return [
       {
+        source: '/resume.pdf',
+        headers: securityHeaders.filter(
+          (h) => h.key !== 'X-Frame-Options'
+        ),
+      },
+      {
         source: '/(.*)',
         headers: securityHeaders,
       },
