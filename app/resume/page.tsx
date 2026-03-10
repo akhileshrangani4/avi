@@ -61,7 +61,7 @@ export default function ResumePage() {
       </div>
       <div className="w-full rounded-lg overflow-hidden border border-neutral-200 dark:border-neutral-800">
         <iframe
-          src="/resume.pdf"
+          src="/api/resume"
           className="w-full"
           style={{ height: '80vh' }}
           title="Resume"
