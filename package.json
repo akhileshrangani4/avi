@@ -46,6 +46,7 @@
     "arrowParens": "avoid"
   },
   "devDependencies": {
+    "baseline-browser-mapping": "^2.10.0",
     "clsx": "^2.1.1",
     "eslint-config-prettier": "^10.1.5",
     "husky": "^9.1.7",
