@@ -27,6 +27,13 @@ export const metadata: Metadata = {
     siteName: userData.name,
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: `${userData.site}/og?title=${encodeURIComponent('avi.mn')}&summary=${encodeURIComponent('founding engineer at tambo ai. building developer tools, AI systems, and generative ui.')}`,
+        width: 1200,
+        height: 630,
+      },
+    ],
   },
   robots: {
     index: true,
