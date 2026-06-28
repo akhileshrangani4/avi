@@ -166,7 +166,7 @@ function SongDetail({ song }: { song: Song }) {
 
       {song.hasLyrics && (
         <div className="mt-12">
-          <Lyrics />
+          <Lyrics slug={song.slug} />
         </div>
       )}
     </div>

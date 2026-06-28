@@ -74,12 +74,46 @@ export const songs: Song[] = [
     slug: 'ho-jaata-hai',
     title: 'ho jaata hai',
     meaning: '“it just happens”',
-    status: 'upcoming',
-    meta: 'upcoming single',
+    status: 'released',
+    meta: 'single',
     cover: '/images/music/ho-jaata-hai.png',
     about:
       'the other side of tune kaha tha. about the quiet flutter of falling for someone, the way everything slows down and lights up when they\'re around. the words that get stuck, the nervousness of a first meeting, and how your name in their voice changes the whole day.',
-    preSaveUrl: 'https://distrokid.com/hyperfollow/avi54/ho-jaata-hai?ref=release',
+    spotifyEmbedTrackId: '6MUjtuWMIS5dxYHnJ5UR7Y',
+    hasLyrics: true,
+    streamingLinks: [
+      {
+        name: 'spotify',
+        url: 'https://open.spotify.com/track/6MUjtuWMIS5dxYHnJ5UR7Y?si=fde576bcb1ea4471',
+        logo: '/images/music/logos/spotify.svg',
+      },
+      {
+        name: 'apple music',
+        url: 'https://music.apple.com/us/song/ho-jaata-hai/6777912866',
+        logo: '/images/music/logos/apple-music.svg',
+      },
+      {
+        name: 'youtube',
+        url: 'https://youtu.be/IajEIhlgpwc?si=93yymx_xMvFg0ldP',
+        logo: '/images/music/logos/youtube.svg',
+      },
+      {
+        name: 'youtube music',
+        url: 'https://music.youtube.com/watch?v=IajEIhlgpwc&si=Q-yvodwjMNKLC20L',
+        logo: '/images/music/logos/youtube-music.svg',
+      },
+      {
+        name: 'amazon music',
+        url: 'https://music.amazon.in/albums/B0H4GDF3QQ?marketplaceId=A3K6Y4MI8GDYMT&musicTerritory=IN&ref=dm_sh_KMb5z1p375YMgDjPWgvUFgjTx',
+        logo: '/images/music/logos/amazon-music.svg',
+      },
+      {
+        name: 'tidal',
+        url: 'https://tidal.com/track/531597545/u',
+        logo: '/images/music/logos/tidal.svg',
+        invertOnDark: true,
+      },
+    ],
   },
 ];
 

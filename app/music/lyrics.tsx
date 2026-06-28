@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+type LyricVariant = { label: string; text: string };
+
 const hindiLyrics = `कह दिया सब ठीक है पर ठीक था ही नहीं
 तू मेरे सामने थी पर मैं वहाँ था ही नहीं
 
@@ -114,8 +116,168 @@ don't break me like this…
 even when I was right there…
 I was already gone…`;
 
-export function Lyrics() {
-  const [lang, setLang] = useState<'hindi' | 'english'>('hindi');
+const hoJaataHaiLyrics = `aajkal sab theek hai waise
+kaam bhi dheere chal raha hai
+shehar bhi halka lagta hai
+din bhi nikal raha hai
+bas jab tu saamne aati hai
+sab kuch dheema ho jaata hai
+main jo kehna chahta hoon
+woh dil mein hi reh jaata hai
+teri awaaz ke aage
+lafzon ko dhoondta raha
+tu bolti gayi
+main sunta raha
+
+pata nahi yeh kya tha
+par achha lagta hai
+tu paas ho zara sa
+toh dil aur dhadakta hai
+
+tera naam jab aata hai
+dil chupke se muskuraata hai
+tu dekhe jo ek baar
+din saara roshan ho jaata hai
+tera naam jab aata hai
+kuch toh badal sa jaata hai
+main main nahi rehta
+dil tera sa ho jaata hai
+
+teri baaton mein jaise
+koi narmi si ghulti hai
+tu hans ke jo dekhe
+shaam thodi si rukti hai
+tere jhumke jab hilte hain
+halki si unki aahat mein
+main kho sa jaata hoon
+teri har ek baat mein
+woh safed si kurti
+woh dheema sa andaaz
+tu simple si lagti hai
+par dil pe karti raaz
+
+pata nahi yeh kya tha
+par achha lagta hai
+tu paas ho zara sa
+toh dil aur dhadakta hai
+
+tera naam jab aata hai
+dil chupke se muskuraata hai
+tu dekhe jo ek baar
+din saara roshan ho jaata hai
+tera naam jab aata hai
+kuch toh badal sa jaata hai
+main main nahi rehta
+dil tera sa ho jaata hai
+
+main kehna bhi chaahun
+toh keh nahi paata
+tu saamne hoti hai
+main reh nahi paata
+thoda sa darr hai
+thodi si baat hai
+shayad yahi toh
+pehli mulaqaat hai
+
+tera naam jab aata hai
+dil chupke se muskuraata hai
+tu dekhe jo ek baar
+din saara roshan ho jaata hai
+tera naam jab aata hai
+kuch toh badal sa jaata hai
+main main nahi rehta
+dil tera sa ho jaata hai`;
+
+const hoJaataHaiEnglish = `these days everything's fine, sort of
+work's ticking along slowly too
+the city feels lighter
+the days keep passing
+it's just when you come in front of me
+everything goes quiet and slow
+the things I want to say
+stay stuck inside my heart
+against your voice
+I kept searching for words
+you kept talking
+I kept listening
+
+I don't know what this was
+but it feels good
+when you're just a little close
+my heart beats harder
+
+when your name comes up
+my heart quietly smiles
+if you just look once
+the whole day lights up
+when your name comes up
+something quietly shifts
+I stop being myself
+my heart turns a little like yours
+
+in the way you talk
+a softness seems to melt
+when you look and smile
+the evening pauses a little
+when your earrings sway
+in their faint little sound
+I get a little lost
+in every word you say
+that white kurti
+that quiet way about you
+you seem so simple
+but you work secrets on my heart
+
+I don't know what this was
+but it feels good
+when you're just a little close
+my heart beats harder
+
+when your name comes up
+my heart quietly smiles
+if you just look once
+the whole day lights up
+when your name comes up
+something quietly shifts
+I stop being myself
+my heart turns a little like yours
+
+even when I want to say it
+the words don't come out
+when you're in front of me
+I can't hold myself together
+there's a little fear
+a little something unsaid
+maybe this is
+what a first meeting feels like
+
+when your name comes up
+my heart quietly smiles
+if you just look once
+the whole day lights up
+when your name comes up
+something quietly shifts
+I stop being myself
+my heart turns a little like yours`;
+
+const lyricsBySlug: Record<string, LyricVariant[]> = {
+  'tune-kaha-tha': [
+    { label: 'hindi', text: hindiLyrics },
+    { label: 'english', text: englishLyrics },
+  ],
+  'ho-jaata-hai': [
+    { label: 'hindi', text: hoJaataHaiLyrics },
+    { label: 'english', text: hoJaataHaiEnglish },
+  ],
+};
+
+export function Lyrics({ slug }: { slug: string }) {
+  const variants = lyricsBySlug[slug];
+  const [active, setActive] = useState(0);
+
+  if (!variants?.length) return null;
+
+  const current = variants[Math.min(active, variants.length - 1)];
 
   return (
     <div>
@@ -123,32 +285,31 @@ export function Lyrics() {
         <h2 className="text-xs font-medium text-neutral-400 dark:text-neutral-500 uppercase tracking-widest">
           lyrics
         </h2>
-        <span className="text-neutral-300 dark:text-neutral-700 mx-1">—</span>
-        <div className="flex gap-1">
-          <button
-            onClick={() => setLang('hindi')}
-            className={`text-xs px-2.5 py-1 rounded-md transition-colors duration-150 ${
-              lang === 'hindi'
-                ? 'bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-medium'
-                : 'text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300'
-            }`}
-          >
-            hindi
-          </button>
-          <button
-            onClick={() => setLang('english')}
-            className={`text-xs px-2.5 py-1 rounded-md transition-colors duration-150 ${
-              lang === 'english'
-                ? 'bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-medium'
-                : 'text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300'
-            }`}
-          >
-            english
-          </button>
-        </div>
+        {variants.length > 1 && (
+          <>
+            <span className="text-neutral-300 dark:text-neutral-700 mx-1">
+              —
+            </span>
+            <div className="flex gap-1">
+              {variants.map((variant, i) => (
+                <button
+                  key={variant.label}
+                  onClick={() => setActive(i)}
+                  className={`text-xs px-2.5 py-1 rounded-md transition-colors duration-150 ${
+                    i === active
+                      ? 'bg-neutral-200 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 font-medium'
+                      : 'text-neutral-400 dark:text-neutral-500 hover:text-neutral-600 dark:hover:text-neutral-300'
+                  }`}
+                >
+                  {variant.label}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
       </div>
       <pre className="text-[15px] text-neutral-500 dark:text-neutral-400 leading-relaxed max-w-lg whitespace-pre-wrap font-[inherit]">
-        {lang === 'hindi' ? hindiLyrics : englishLyrics}
+        {current.text}
       </pre>
     </div>
   );
