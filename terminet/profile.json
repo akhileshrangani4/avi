@@ -1,0 +1,26 @@
+{
+  "$schema": "./profile.schema.json",
+  "version": 1,
+  "handle": "akhileshrangani4",
+  "name": "Akhilesh Rangani",
+  "tagline": "building Buildy at Tambo. personal software you use with your agents. also make music.",
+  "links": {
+    "site": "https://avi.mn",
+    "github": "https://github.com/akhileshrangani4",
+    "tambo": "https://tambo.co",
+    "buildy": "https://buildy.so",
+    "music": "https://avi.mn/music",
+    "calendar": "https://avi.mn/calendar"
+  },
+  "accent": "#0070f3",
+  "banner": {
+    "type": "text",
+    "text": "avi"
+  },
+  "connections": [
+    {
+      "handle": "milst",
+      "note": "made terminet"
+    }
+  ]
+}

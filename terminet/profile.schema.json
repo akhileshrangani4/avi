@@ -1,0 +1,140 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://terminet.dev/profile.schema.json",
+  "title": "terminet profile",
+  "description": "A terminal-native profile, viewed with `npx terminet <handle>`.",
+  "type": "object",
+  "required": [
+    "version"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "version": {
+      "const": 1,
+      "description": "Schema version — do not change."
+    },
+    "handle": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,31}$",
+      "description": "Your npm username, or an npm org scope you can publish to. Publishes as @<handle>/profile."
+    },
+    "name": {
+      "type": "string",
+      "maxLength": 60,
+      "description": "Display name."
+    },
+    "tagline": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "One line about you."
+    },
+    "accent": {
+      "type": "string",
+      "pattern": "^#[0-9a-fA-F]{6}$",
+      "description": "Accent color as #rrggbb (colors the wordmark, handle, links)."
+    },
+    "links": {
+      "type": "object",
+      "description": "Label → URL, opened from your profile. https only.",
+      "maxProperties": 8,
+      "propertyNames": {
+        "maxLength": 20
+      },
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^https?://"
+      }
+    },
+    "connections": {
+      "type": "array",
+      "description": "Handles you link to — the ring's edges. A handle string, or {handle, note} to say why. Unilateral, like a link.",
+      "maxItems": 24,
+      "items": {
+        "oneOf": [
+          {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
+          },
+          {
+            "type": "object",
+            "required": [
+              "handle"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "handle": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9-]{0,31}$"
+              },
+              "note": {
+                "type": "string",
+                "maxLength": 60,
+                "description": "Why you link to them (one short line)."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "banner": {
+      "description": "A wordmark, ASCII frames, or null. Generate frames with `terminet banner`.",
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "text"
+          ],
+          "additionalProperties": false,
+          "description": "A pixel-font wordmark.",
+          "properties": {
+            "type": {
+              "const": "text"
+            },
+            "text": {
+              "type": "string",
+              "maxLength": 12
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "type",
+            "frameMs"
+          ],
+          "additionalProperties": false,
+          "description": "ASCII frames — inline (`frames`) or in a companion file (`src`).",
+          "properties": {
+            "type": {
+              "const": "frames"
+            },
+            "frameMs": {
+              "type": "number",
+              "minimum": 60,
+              "maximum": 2000
+            },
+            "frames": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "maxItems": 60
+            },
+            "src": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9._-]+\\.json$",
+              "description": "A safe sibling filename, e.g. banner.json (written by `terminet banner`)."
+            }
+          }
+        }
+      ]
+    }
+  }
+}
