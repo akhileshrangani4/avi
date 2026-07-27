@@ -46,7 +46,11 @@ export default function Page() {
       <Badge href="https://tambo.co" underline={true}>
         tambo ai
       </Badge>
-      , building the generative ui sdk for react.
+      , building{' '}
+      <Badge href="https://usecharming.com" underline={true}>
+        charming
+      </Badge>
+      . personal software you use with your agents.
     </p>,
     <p key="gwu">
       research at{' '}
@@ -83,7 +87,7 @@ export default function Page() {
       title: 'gitwit sandbox',
       description:
         'open-source cloud ide with ai copilot, live preview, and real-time collaboration.',
-      url: 'https://sandbox.gitwit.dev/',
+      url: 'https://gitwit.dev',
     },
     {
       title: 'the standup app',

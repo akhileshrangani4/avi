@@ -15,21 +15,21 @@ export const metadata: Metadata = {
     template: '%s | ' + userData.name,
   },
   description:
-    'Founding Engineer at Tambo AI. Building developer tools, AI systems, and generative UI.',
+    'Founding Engineer at Tambo AI, building Charming: personal software you use with your agents.',
   alternates: {
     canonical: userData.site,
   },
   openGraph: {
     title: userData.name,
     description:
-      'Founding Engineer at Tambo AI. Building developer tools, AI systems, and generative UI.',
+      'Founding Engineer at Tambo AI, building Charming: personal software you use with your agents.',
     url: userData.site,
     siteName: userData.name,
     locale: 'en_US',
     type: 'website',
     images: [
       {
-        url: `${userData.site}/og?title=${encodeURIComponent('avi.mn')}&summary=${encodeURIComponent('founding engineer at tambo ai. building developer tools, AI systems, and generative ui.')}`,
+        url: `${userData.site}/og?title=${encodeURIComponent('avi.mn')}&summary=${encodeURIComponent('founding engineer at tambo ai, building charming: personal software you use with your agents.')}`,
         width: 1200,
         height: 630,
       },
