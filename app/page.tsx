@@ -5,6 +5,7 @@ import { PhotoGridSection } from 'app/components/photo-grid-section';
 import { ProjectsSection } from 'app/components/projects-section';
 import { WritingSection } from 'app/components/writing-section';
 import { getBlogPosts } from 'app/db/blog';
+import { latestRelease } from 'app/music/songs';
 import { userData } from 'lib/data';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -149,22 +150,22 @@ export default function Page() {
           latest release
         </h2>
         <Link
-          href="/music"
+          href={`/music/${latestRelease.slug}`}
           className="flex items-center gap-4 group"
         >
           <Image
-            src="/images/music/cover.png"
-            alt="tune kaha tha cover art"
+            src={latestRelease.cover}
+            alt={`${latestRelease.title} cover art`}
             width={80}
             height={80}
             className="rounded-lg"
           />
           <div>
             <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100 group-hover:underline underline-offset-[3px] decoration-[0.5px]">
-              tune kaha tha
+              {latestRelease.title}
             </p>
             <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
-              single &middot; 2026
+              {latestRelease.meta} &middot; 2026
             </p>
           </div>
         </Link>

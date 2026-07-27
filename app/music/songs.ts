@@ -14,6 +14,7 @@ export type Song = {
   about: string;
   cover: string;
   spotifyEmbedTrackId?: string;
+  youtubeVideoId?: string;
   streamingLinks?: StreamingLink[];
   hasLyrics?: boolean;
   preSaveUrl?: string;
@@ -80,6 +81,7 @@ export const songs: Song[] = [
     about:
       'the other side of tune kaha tha. about the quiet flutter of falling for someone, the way everything slows down and lights up when they\'re around. the words that get stuck, the nervousness of a first meeting, and how your name in their voice changes the whole day.',
     spotifyEmbedTrackId: '6MUjtuWMIS5dxYHnJ5UR7Y',
+    youtubeVideoId: 'mO3kZm1H6C0',
     hasLyrics: true,
     streamingLinks: [
       {
@@ -119,8 +121,14 @@ export const songs: Song[] = [
 
 export const songSlugs = songs.map((s) => s.slug);
 
-export const defaultSong =
-  songs.find((s) => s.status === 'released') ?? songs[0];
+const latestReleaseSlug = 'ho-jaata-hai';
+
+export const latestRelease =
+  songs.find((s) => s.slug === latestReleaseSlug) ??
+  songs.find((s) => s.status === 'released') ??
+  songs[0];
+
+export const defaultSong = latestRelease;
 
 export function getSong(slug: string): Song | undefined {
   return songs.find((s) => s.slug === slug);

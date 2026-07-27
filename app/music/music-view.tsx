@@ -162,6 +162,24 @@ function SongDetail({ song }: { song: Song }) {
         </div>
       )}
 
+      {song.youtubeVideoId && (
+        <div className="mt-12">
+          <h3 className="text-xs font-medium mb-4 text-neutral-400 dark:text-neutral-500 uppercase tracking-widest">
+            video song
+          </h3>
+          <div className="relative w-full aspect-video overflow-hidden rounded-xl ring-1 ring-neutral-200/80 dark:ring-neutral-800">
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${song.youtubeVideoId}`}
+              title={`${song.title} video song`}
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              loading="lazy"
+              className="absolute inset-0 w-full h-full border-0"
+            />
+          </div>
+        </div>
+      )}
+
       <StreamingChips song={song} />
 
       {song.hasLyrics && (
