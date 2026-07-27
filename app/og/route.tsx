@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 
 const DEFAULT_SUMMARY =
-  'software engineer in san francisco. founding engineer at tambo, building charming: personal software you use with your agents.';
+  'software engineer in san francisco. founding engineer at charming (previously tambo). personal software you use with your agents.';
 
 const DEFAULT_TAGS = ['react', 'typescript', 'ai', 'open source', 'dev tools'];
 

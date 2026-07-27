@@ -41,16 +41,16 @@ export default function Page() {
   ];
 
   const workData = [
-    <p key="tambo">
+    <p key="charming">
       founding engineer at{' '}
+      <Badge href="https://usecharming.com" underline={true}>
+        charming
+      </Badge>{' '}
+      (previously{' '}
       <Badge href="https://tambo.co" underline={true}>
         tambo ai
       </Badge>
-      , building{' '}
-      <Badge href="https://usecharming.com" underline={true}>
-        charming
-      </Badge>
-      . personal software you use with your agents.
+      ). personal software you use with your agents.
     </p>,
     <p key="gwu">
       research at{' '}
@@ -131,8 +131,8 @@ export default function Page() {
             jobTitle: 'Founding Engineer',
             worksFor: {
               '@type': 'Organization',
-              name: 'Tambo AI',
-              url: 'https://tambo.co',
+              name: 'Charming',
+              url: 'https://usecharming.com',
             },
             sameAs: [
               userData.twitter,
