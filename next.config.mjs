@@ -49,7 +49,7 @@ const ContentSecurityPolicy = `
     media-src 'self' blob: data:;
     connect-src *;
     font-src 'self' data:;
-    frame-src 'self' *.codesandbox.io vercel.live open.spotify.com;
+    frame-src 'self' *.codesandbox.io vercel.live open.spotify.com www.youtube-nocookie.com www.youtube.com;
 `;
 
 const securityHeaders = [
