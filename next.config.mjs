@@ -36,6 +36,18 @@ const nextConfig = {
         source: '/(.*)',
         headers: securityHeaders,
       },
+      {
+        // Rebuilt from src/resume/resume.tex on every deploy, so the default
+        // 4h max-age serves a stale copy to anyone who visited recently.
+        // Revalidate every time; the ETag keeps it a cheap 304.
+        source: '/resume.pdf',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=0, must-revalidate',
+          },
+        ],
+      },
     ];
   },
 };
