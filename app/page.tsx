@@ -31,7 +31,7 @@ export default function Page() {
   const heroData = {
     name: "hey, i'm avi.",
     description:
-      "software engineer and musician in san francisco. i build developer tools, AI systems, and things that ship. i also write and produce music.",
+      'software engineer and musician in san francisco. i build developer tools, AI systems, and things that ship. i also write and produce music.',
   };
 
   const photoData = [
@@ -78,28 +78,40 @@ export default function Page() {
 
   const projectsData = [
     {
+      title: 'the agent factory',
+      description:
+        'github-native agent pipeline at charming. a github issue becomes a merged pr with no human at the keyboard. 448 of 2,624 merged prs fully agent-authored.',
+      url: 'https://charm.ing/avi/the-agent-factory-slides',
+    },
+    {
+      title: 'agent-peek',
+      description:
+        'shared context feed for coding agents. cli, mcp server, and library so one agent writes down what it found, or hands off, and the next one reads it instead of re-exploring the repo.',
+      url: 'https://github.com/akhileshrangani4/agent-peek',
+    },
+    {
       title: 'teach anything',
       description:
-        'open-source ai chatbots for education. used by 250+ professors worldwide. featured in the new york times.',
+        'open-source ai chatbots for education. used by 250+ professors across 33 universities in 15 countries. featured in the new york times.',
       url: 'https://www.teachanything.ai/',
+    },
+    {
+      title: 'reality git',
+      description:
+        'iphone ar app that remembers where an object was and shows what moved. lidar depth, gaussian splats, and chatgpt sign-in on device.',
+      url: 'https://github.com/akhileshrangani4/reality-git',
+    },
+    {
+      title: 'the standup app',
+      description:
+        'ai-powered team dashboard. ask questions in plain english, get interactive components from linear and github.',
+      url: 'https://github.com/tambo-labs/thestandupapp',
     },
     {
       title: 'gitwit sandbox',
       description:
         'open-source cloud ide with ai copilot, live preview, and real-time collaboration.',
       url: 'https://gitwit.dev',
-    },
-    {
-      title: 'the standup app',
-      description:
-        'ai-powered team dashboard. ask questions in plain english, get interactive components from linear and github.',
-      url: 'https://github.com/tambo-ai/thestandupapp',
-    },
-    {
-      title: 'nova explorer',
-      description:
-        'ai space exploration game with voice controls, procedural galaxy generation, and generative ui.',
-      url: 'https://github.com/akhileshrangani4/nova-explorer',
     },
   ];
 
@@ -134,11 +146,7 @@ export default function Page() {
               name: 'Charming',
               url: 'https://usecharming.com',
             },
-            sameAs: [
-              userData.twitter,
-              userData.linkedin,
-              userData.github,
-            ],
+            sameAs: [userData.twitter, userData.linkedin, userData.github],
           }),
         }}
       />
