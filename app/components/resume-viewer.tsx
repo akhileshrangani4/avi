@@ -1,5 +1,7 @@
 'use client';
 
+// Must precede react-pdf: pdf.js calls Math.sumPrecise at module scope.
+import 'lib/math-sum-precise';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
