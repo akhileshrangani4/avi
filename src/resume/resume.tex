@@ -1,6 +1,6 @@
 \documentclass[10pt,a4paper]{article}
 
-\usepackage[top=0.35in, bottom=0.35in, left=0.4in, right=0.4in]{geometry}
+\usepackage[top=0.25in, bottom=0.25in, left=0.34in, right=0.34in]{geometry}
 \usepackage{enumitem}
 \usepackage{titlesec}
 \usepackage{hyperref}
@@ -10,9 +10,9 @@
 \pagenumbering{gobble}
 
 \titleformat{\section}{\normalsize\bfseries\uppercase}{}{0em}{}[\titlerule]
-\titlespacing{\section}{0pt}{5pt}{3pt}
+\titlespacing{\section}{0pt}{3pt}{2pt}
 
-\setlist[itemize]{noitemsep, topsep=1pt, parsep=0pt, leftmargin=12pt}
+\setlist[itemize]{noitemsep, topsep=0pt, parsep=0pt, leftmargin=11pt}
 
 \hypersetup{colorlinks=true, linkcolor=black, urlcolor=blue}
 
@@ -34,80 +34,80 @@
 
 \vspace{-2pt}
 \small
-Full-stack engineer who builds \textbf{SDKs}, \textbf{CLIs}, \textbf{cloud IDEs}, and \textbf{LLM agent pipelines}. Deep experience with \textbf{React}, \textbf{TypeScript}, \textbf{streaming infrastructure}, \textbf{real-time systems}, and \textbf{RAG}.
+Full-stack engineer who builds \textbf{SDKs}, \textbf{CLIs}, \textbf{sandboxed app runtimes}, and \textbf{LLM agent pipelines} in \textbf{React} and \textbf{TypeScript}, across \textbf{MCP}, \textbf{streaming infrastructure}, \textbf{real-time systems}, and \textbf{RAG}.
 
 % ===== EXPERIENCE =====
 \section{Experience}
 
-\textbf{Founding Engineer} (prev. Intern) $|$ \textbf{Charming (formerly \href{https://tambo.co}{Tambo})} $|$ Remote \hfill Mar 2025 -- Present
+\textbf{Founding Engineer} (prev. Intern) $|$ \textbf{\href{https://usecharming.com}{Charming} (formerly \href{https://tambo.co}{Tambo})} $|$ Remote \hfill Mar 2025 -- Present
 \begin{itemize}
-    \item \textbf{Built the CLI and component library from the ground up}: device \textbf{auth} flow with atomic code claiming, \textbf{framework detection} (Next.js/Vite), non-interactive mode for \textbf{AI agents}, full-send scaffolding, \textbf{streaming} prop rendering, persistent interactable components, and \textbf{tool execution} with error recovery. 346+ commits.
-    \item Owned \textbf{auth}, \textbf{onboarding}, and \textbf{analytics} end-to-end: \textbf{OAuth} token resolution, \textbf{Google auth} with user metadata, CLI auth flow, onboarding wizard with referral tracking, and \textbf{PostHog} analytics across frontend, backend, and CLI with anonymous telemetry.
-    \item Designed and shipped the \textbf{Claude Code plugin system}, consolidating fragmented skills into two context-aware entry points. Built \textbf{MCP OAuth} flows and custom header support.
-    \item Fixed critical \textbf{reliability} issues: thread loading states stuck after tool call failures, content blocks rendering out of order, MCP errors with no servers configured, and \textbf{ESM} compatibility breaks. Core contributor to an \textbf{open-source SDK} with \textbf{3,800+ users}, \textbf{11k+ GitHub stars}, and \textbf{550+ forks}.
+    \item \textbf{Built the Tambo CLI and component library from the ground up}: device \textbf{auth} with atomic code claiming, \textbf{framework detection}, a a non-interactive mode for \textbf{AI agents}, \textbf{streaming} prop rendering, and \textbf{tool execution} with error recovery. Core contributor to an \textbf{open-source SDK} with \textbf{3,800+ users} and \textbf{11k+ stars}.
+    \item Owned the \textbf{app runtime} at Charming: moved execution onto a \textbf{workerd} sandbox, wrote the \textbf{sandbox-escape} suite, and shipped a sealed \textbf{secret store} with \textbf{key rotation}, per-host \textbf{egress allowlists}, and \textbf{custom domains} with per-visitor isolation.
+    \item Owned the \textbf{agent surface}: a \textbf{31-tool MCP server} with full \textbf{OAuth} (dynamic client registration, path-scoped resource metadata, cross-origin login proxy), refactored from \textbf{3,023 to 495 lines} behind an integration oracle, with a \textbf{CI} gate that flags every contract change for resubmission.
+    \item Rebuilt first-run onboarding around a connect wizard and instrumented the funnel in \textbf{PostHog}, taking \textbf{signup-to-first-app conversion from 17\% to 25\%} and cutting median time to first app to under 20 minutes. Shipped the \textbf{pricing} rail with per-app rate limits and sped up \textbf{CI} by caching docs-drift and MCP-contract checks through Turbo.
 \end{itemize}
 
 \vspace{1pt}
-\textbf{Research Assistant in AI} $|$ \textbf{George Washington University} $|$ Washington, DC \hfill May 2024 -- Dec 2025
+\textbf{Research Assistant in AI} $|$ \textbf{\href{https://gwdhi.org/student-spotlight-akhilesh-rangani/}{George Washington University}} $|$ Washington, DC \hfill May 2024 -- Dec 2025
 \begin{itemize}
-    \item \textbf{Built Teach Anything from scratch}: \textbf{open-source RAG platform} for professors to upload course materials and spin up \textbf{AI chatbots}. Grew to \textbf{250+ professors}, featured in the \textbf{New York Times}. 206+ commits.
-    \item Implemented \textbf{RAG pipeline} with \textbf{pgvector} for \textbf{semantic search}, iterated through 5+ \textbf{chunking strategies} to optimize retrieval. Built \textbf{async file processing} with Upstash QStash and \textbf{rate limiting} with \textbf{Redis}.
-    \item Integrated \textbf{LLMs} (Llama 3.3 70B, Mistral Large, Qwen 2.5 72B) via OpenRouter with \textbf{streaming} responses using the \textbf{AI SDK}.
-    \item Designed \textbf{multi-tenant architecture} with professor approval workflows, domain-based \textbf{access control}, \textbf{usage analytics} dashboards, and subdomain routing.
+    \item \textbf{Built Teach Anything from scratch}: \textbf{open-source RAG platform} for professors to upload course materials and spin up \textbf{AI chatbots}. Grew to \textbf{250+ professors}, featured in the \textbf{\href{https://www.nytimes.com/2026/01/17/nyregion/ai-college-classes.html}{New York Times}}.
+    \item Implemented the \textbf{RAG pipeline} with \textbf{pgvector} for \textbf{semantic search}, iterating through 5+ \textbf{chunking strategies} to improve retrieval. Served open \textbf{LLMs} (Llama 3.3 70B, Mistral Large, Qwen 2.5 72B) via OpenRouter with \textbf{streaming} responses on the \textbf{AI SDK}, \textbf{async file processing} on Upstash QStash, and \textbf{Redis} rate limiting.
+    \item Designed the \textbf{multi-tenant architecture}: professor approval workflows, domain-based \textbf{access control}, and \textbf{usage analytics}.
 \end{itemize}
 
 \vspace{1pt}
-\textbf{Software Engineer} $|$ \textbf{GitWit} $|$ Remote \hfill Apr 2024 -- Dec 2025
+\textbf{Software Engineer} $|$ \textbf{\href{https://gitwit.dev}{GitWit}} $|$ Remote \hfill Apr 2024 -- Dec 2025
 \begin{itemize}
-    \item Core engineer on Sandbox, an \textbf{open-source cloud IDE} with \textbf{AI copilot} and \textbf{real-time collaboration}. Built \textbf{Monaco editor} integration, file system, syntax highlighting, and code diffs powered by \textbf{E2B} sandboxes. 214+ commits.
-    \item \textbf{Built the AI copilot}: migrated to \textbf{AI SDK v6} with \textbf{multi-step tool calling}, multi-provider support (\textbf{Anthropic}, \textbf{OpenAI}, \textbf{OpenRouter}, \textbf{AWS Bedrock}), inline \textbf{visual diffs}, and \textbf{encrypted API key management} (AES-256-GCM).
-    \item Built \textbf{one-click deploys} via Dokku, \textbf{WebSocket} terminals, and template scaffolding for 5 frameworks. Restructured into \textbf{Turborepo monorepo}, replaced \textasciitilde90 \texttt{any} types, removed dead code across 23 files.
-    \item Owned \textbf{platform reliability}: \textbf{socket} stability, \textbf{GitHub OAuth} flows, \textbf{Clerk SSR} integration, and dashboard optimizations. Coordinated contributions from multiple developers.
+    \item Core engineer on Sandbox, an \textbf{open-source cloud IDE} with \textbf{AI copilot} and \textbf{real-time collaboration}. Built \textbf{Monaco editor} integration, file system, syntax highlighting, and code diffs on \textbf{E2B} sandboxes.
+    \item \textbf{Built the AI copilot}: a \textbf{streaming multi-step tool-calling} loop across four providers (\textbf{Anthropic}, \textbf{OpenAI}, \textbf{OpenRouter}, \textbf{Bedrock}), with diff markers rendered as \textbf{inline visual diffs} in the editor, cancellable generations, and per-user \textbf{API keys} sealed with \textbf{AES-256-GCM}.
+    \item Built \textbf{one-click deploys} via Dokku, \textbf{WebSocket} terminals, and templates for 5 frameworks. Re-architected the AI package into a \textbf{provider-agnostic} wrapper, moved its endpoints onto \textbf{Hono}, and restructured the repo into a \textbf{Turborepo monorepo}.
+    \item Owned \textbf{platform reliability}: \textbf{socket} stability, \textbf{GitHub OAuth}, \textbf{Clerk SSR}, and dashboard performance.
 \end{itemize}
 
 \vspace{1pt}
 \textbf{Co-Founder \& CTO} $|$ \textbf{Triclone Technologies} $|$ Surat, India \hfill Jul 2022 -- May 2023
 \begin{itemize}
-    \item \textbf{Built a field service CRM from the ground up}: \textbf{GraphQL} API with \textbf{Express.js} and \textbf{MongoDB} for job scheduling, dispatch, and live technician tracking. Shipped cross-platform with \textbf{Next.js} (web), \textbf{Flutter} (mobile), and \textbf{Firebase} for real-time sync and push notifications.
-    \item Led a team of 5. Reduced \textbf{deployment time by 25\%} with \textbf{CI/CD} pipelines, \textbf{Docker}/\textbf{Kubernetes} orchestration, and auto-scaling on \textbf{AWS} and \textbf{Azure}. Integrated \textbf{Sentry} for error tracking and \textbf{serverless functions} for webhook processing.
+    \item \textbf{Built a field service CRM from the ground up}: \textbf{GraphQL} API on \textbf{Express.js} and \textbf{MongoDB} for job scheduling, dispatch, and live technician tracking, shipped cross-platform with \textbf{Next.js}, \textbf{Flutter}, and \textbf{Firebase} for real-time sync and push.
+    \item Led a team of 5. Reduced \textbf{deployment time by 25\%} with \textbf{CI/CD} pipelines, \textbf{Docker}/\textbf{Kubernetes} orchestration, and auto-scaling on \textbf{AWS} and \textbf{Azure}, plus \textbf{Sentry} and \textbf{serverless} webhook processing.
 \end{itemize}
 
 % ===== PROJECTS =====
 \section{Projects}
 
-\textbf{Serene} -- Voice-first thought journal $|$ \textit{AI Agent Glow Up Hackathon}
+\textbf{\href{https://charm.ing/avi/the-agent-factory-slides}{The Agent Factory}} -- GitHub-native agent pipeline $|$ \textit{Charming}
 \begin{itemize}
-    \item Built a \textbf{five-agent sequential pipeline} (synthesis, linker, research, action, calendar) that processes \textbf{voice input} into structured insights, action items, and calendar events. \textbf{GPT-4o-mini} for agents, \textbf{Exa} for neural search.
-    \item \textbf{Real-time voice capture} with \textbf{OpenAI Realtime API} over \textbf{WebSocket}, streaming PCM audio at 24kHz. Animated clustering UI with \textbf{react-dnd} and SVG bezier curve connections.
+    \item Built a pipeline where a \textbf{GitHub issue becomes a merged PR with no human at the keyboard}: no orchestrator, because \textbf{GitHub is the runtime and the memory}. Stateless \textbf{headless Claude Code} jobs in \textbf{CI} read state from labels and reviews on wake and write it back on exit. \textbf{448 of 2,624 merged PRs fully agent-authored} over 22 weeks with 3 engineers.
+    \item Added the circuit breakers that make it safe to leave running (3-attempt cap, size and path gates, no self-editing of workflows), surfaced each agent's final message, persisted run logs, and made cancelled runs report distinctly rather than as failures.
 \end{itemize}
 
-\textbf{The Standup App} -- AI-powered team dashboard
+\textbf{\href{https://github.com/akhileshrangani4/teachanything}{Teach Anything}} -- Open-source course chatbots $|$ \textit{maintainer, 2024 -- Present}
 \begin{itemize}
-    \item \textbf{Built from scratch}: \textbf{multi-tenant} platform with \textbf{WorkOS auth} where you ask questions in plain English and get \textbf{interactive components} (PR lists, issue trackers, sprint views) generated from \textbf{Linear} and \textbf{GitHub} data via Tambo's \textbf{generative UI SDK}.
-    \item Built \textbf{Linear} integration with \textbf{@linear/sdk} and \textbf{GitHub API} routes with issue search, filters, member-scoped views, and \textbf{rate limiting}.
+    \item Rebuilt retrieval as \textbf{agentic hybrid search} (vector, Postgres FTS, and trigram fused by \textbf{reciprocal rank fusion}) with page-level citations, cutting a chat turn from \textbf{two embeddings and two LLM round trips to one of each} and running the retrievers concurrently. Added a \textbf{crawler} with stuck-crawl recovery and multilingual \textbf{voice input} on Whisper.
+    \item Shipped a \textbf{quiz engine} on the \textbf{AI SDK} transport that salvages token-truncated and text-leaked model output instead of failing, plus session-level \textbf{analytics}. In use at \textbf{33 universities across 15 countries}.
 \end{itemize}
 
-\textbf{Nova Explorer} -- AI space exploration game $|$ \textit{Daytona HackSprint}
+\textbf{\href{https://github.com/akhileshrangani4/agent-peek}{agent-peek}} -- Shared context feed for coding agents $|$ \textit{open source, \textbf{500 npm downloads/week}}
 \begin{itemize}
-    \item Procedurally generated galaxy where players navigate by \textbf{voice}. Commands trigger \textbf{generative UI} via Tambo. \textbf{ElevenLabs} for voice, \textbf{Supabase} for game state, \textbf{Daytona SDK} for sandboxed code execution.
-    \item \textbf{Parallel sub-agents} with Cerebras GPT-OSS-120B, landing/takeoff mechanics, persistent game state with \textbf{Drizzle ORM}.
+    \item \textbf{CLI, MCP server, and TypeScript library} giving local agents a typed, \textbf{token-budgeted} feed of findings, warnings, intents, and \textbf{handoffs}, each with its own TTL. A session out of context hands off state and next actions; the next agent reads a ranked cursor-based delta instead of re-exploring the repo. \textbf{8 read-only adapters} across Claude Code, Codex, Copilot, Gemini and tmux.
 \end{itemize}
 
-\textbf{YCHTS} -- Government bid finder $|$ \textit{YC Hack the Stackathon}
+\textbf{\href{https://github.com/akhileshrangani4/reality-git}{Reality Git}} -- iPhone AR object memory $|$ \textit{Swift, ARKit, LiDAR}
 \begin{itemize}
-    \item Conversational tool for contractors to find bids by panning a map or asking in plain English. Scrapes procurement portals with \textbf{Firecrawl}, displays on \textbf{MapLibre} with clustering, analyzes documents with \textbf{AI}.
-    \item \textbf{Tambo} for generative UI, \textbf{OpenRouter} for LLM, \textbf{Reducto} for PDF parsing.
+    \item Native \textbf{Swift} app that remembers where an object was and shows what moved: \textbf{LiDAR} depth inside a vision model's outline becomes an immutable surface, drawn as \textbf{Gaussian splats} in \textbf{RealityKit} and diffed against the live position. Signs in with \textbf{ChatGPT} on-device (Keychain, token refresh, no API key or server), tracks at \textbf{30 Hz}, and cut first-result processing \textbf{121ms to 30ms}.
+\end{itemize}
+
+\textbf{\href{https://github.com/tambo-labs/thestandupapp}{The Standup App}} -- AI-powered team dashboard
+\begin{itemize}
+    \item \textbf{Multi-tenant} platform on \textbf{WorkOS auth} where plain-English questions return \textbf{interactive components} (PR lists, issue trackers, sprint views) built from \textbf{Linear} and \textbf{GitHub} data via Tambo's \textbf{generative UI SDK}.
 \end{itemize}
 
 % ===== TECH STACK =====
 \section{Tech Stack}
 
-\textbf{Programming:} Java, Python, SQL, C, C++, HTML, CSS, TypeScript, JavaScript, PHP, Dart \\
-\textbf{Frameworks:} Next.js, Express.js, Node.js, Flutter, Svelte, Streamlit, Vite, Nuxt \\
-\textbf{Tools:} Git, MySQL, Docker, Kubernetes, MongoDB, Prisma, Figma, E2B, Dokku, Postman, Sentry, PostgreSQL \\
-\textbf{Platforms:} AWS, Azure, GitHub, Cloudflare, Vercel, Supabase, Firebase, GCP, DigitalOcean, OpenAI, Anthropic \\
-\textbf{Libraries:} React.js, Zod, Redux, Axios, NextAuth.js, Clerk, Tailwind CSS, AI SDK, Framer Motion \\
-\textbf{Core:} SDK Design, CLI Tooling, Streaming Architecture, RAG Pipelines, Real-time Systems
+\textbf{Languages:} TypeScript, JavaScript, Python, Java, Swift, SQL, C++, Dart, HTML, CSS \\
+\textbf{Frameworks \& Libraries:} React, Next.js, Node.js, Express, Vite, Svelte, Flutter, AI SDK, Zod, Clerk, Tailwind CSS \\
+\textbf{Tools \& Platforms:} Docker, Kubernetes, Turborepo, PostgreSQL, MongoDB, Redis, Prisma, Drizzle, workerd, E2B, Dokku, PostHog, AWS, Azure, GCP, Cloudflare, Vercel, Railway, Supabase \\
+\textbf{Core:} SDK Design, CLI Tooling, MCP \& OAuth, Agent Orchestration, Sandboxed Runtimes, Streaming, RAG
 
 % ===== EDUCATION =====
 \section{Education}
