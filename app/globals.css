@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@config '../tailwind.config.ts';
 
 ::selection {
   background-color: #000;
@@ -84,12 +83,24 @@ body > * {
   animation: enter 0.6s ease both;
 }
 
-.animate-enter-1 { animation-delay: 0ms; }
-.animate-enter-2 { animation-delay: 80ms; }
-.animate-enter-3 { animation-delay: 160ms; }
-.animate-enter-4 { animation-delay: 240ms; }
-.animate-enter-5 { animation-delay: 320ms; }
-.animate-enter-6 { animation-delay: 400ms; }
+.animate-enter-1 {
+  animation-delay: 0ms;
+}
+.animate-enter-2 {
+  animation-delay: 80ms;
+}
+.animate-enter-3 {
+  animation-delay: 160ms;
+}
+.animate-enter-4 {
+  animation-delay: 240ms;
+}
+.animate-enter-5 {
+  animation-delay: 320ms;
+}
+.animate-enter-6 {
+  animation-delay: 400ms;
+}
 
 /* Minimalist prose styles */
 .prose .anchor {

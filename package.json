@@ -1,5 +1,6 @@
 {
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbo",
     "build:resume": "bash scripts/build-resume.sh",
@@ -10,33 +11,32 @@
     "prettier-check": "prettier --check ."
   },
   "dependencies": {
-    "@radix-ui/react-dialog": "^1.1.14",
-    "@tailwindcss/typography": "^0.5.16",
-    "@types/node": "24.0.10",
-    "@types/react": "19.1.8",
-    "@types/react-dom": "19.1.6",
-    "@vercel/analytics": "^1.5.0",
-    "@vercel/speed-insights": "^1.2.0",
-    "autoprefixer": "^10.4.21",
-    "caniuse-lite": "^1.0.30001726",
+    "@radix-ui/react-dialog": "^1.1.23",
+    "@tailwindcss/typography": "^0.5.20",
+    "@types/node": "26.6.0",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
+    "caniuse-lite": "^1.0.30001810",
     "class-variance-authority": "^0.7.1",
-    "geist": "1.4.2",
-    "lucide-react": "^0.525.0",
-    "next": "^16.0.10",
-    "next-auth": "5.0.0-beta.25",
+    "geist": "1.7.2",
+    "lucide-react": "^1.46.0",
+    "next": "^16.3.5",
+    "next-auth": "5.0.0-beta.32",
     "next-mdx-remote": "^6.0.0",
-    "postcss": "^8.5.6",
-    "postgres": "^3.4.7",
-    "radix-ui": "^1.4.2",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "postcss": "^8.5.28",
+    "postgres": "^3.4.9",
+    "radix-ui": "^1.6.7",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
     "react-markdown": "^10.1.0",
-    "react-pdf": "^10.4.1",
-    "sugar-high": "^0.9.3",
-    "tailwind-merge": "^3.3.1",
-    "tailwindcss": "^3.4.16",
-    "typescript": "5.8.3",
-    "zod": "^3.25.75"
+    "react-pdf": "^11.0.0",
+    "sugar-high": "^2.4.1",
+    "tailwind-merge": "^3.7.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "7.0.2",
+    "zod": "^4.6.5"
   },
   "prettier": {
     "singleQuote": true,
@@ -48,10 +48,11 @@
     "arrowParens": "avoid"
   },
   "devDependencies": {
-    "baseline-browser-mapping": "^2.10.0",
+    "@tailwindcss/postcss": "^4.3.3",
+    "baseline-browser-mapping": "^2.11.24",
     "clsx": "^2.1.1",
-    "eslint-config-prettier": "^10.1.5",
+    "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
-    "prettier": "^3.6.2"
+    "prettier": "^3.9.6"
   }
 }
