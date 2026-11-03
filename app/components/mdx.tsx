@@ -111,9 +111,54 @@ function ConsCard({ title, cons }) {
   );
 }
 
+// Inline `code` gets one color for the whole token, picked by what kind of
+// thing it is. Colors live in globals.css under [data-kind].
+type InlineCodeKind =
+  | 'url' // https://…, host/path, *glob*
+  | 'path' // /mcp/jwks
+  | 'const' // ERR_ADDRESS_INVALID, FLAG_NAME
+  | 'header' // Origin, Location: …
+  | 'ident' // redirect_uri, callbackURL, state
+  | 'value' // no-cors
+  | 'message'; // failed to fetch
+
+function classifyInlineCode(text: string): InlineCodeKind {
+  if (/^https?:\/\//.test(text) || /^\*?[\w-]+(\.[\w-]+)+(\/|\*|$)/.test(text))
+    return 'url';
+  if (text.startsWith('/')) return 'path';
+  if (/^[A-Z][A-Z0-9_]+$/.test(text)) return 'const';
+  if (/^[A-Z][A-Za-z-]*(:\s.*)?$/.test(text)) return 'header';
+  if (/\s/.test(text)) return 'message';
+  if (/^[a-z]+(-[a-z]+)+$/.test(text)) return 'value';
+  return 'ident';
+}
+
 function Code({ children, ...props }) {
-  let codeHTML = highlight(children);
-  return <code dangerouslySetInnerHTML={{ __html: codeHTML }} {...props} />;
+  let kind = typeof children === 'string' ? classifyInlineCode(children) : undefined;
+  return (
+    <code data-kind={kind} {...props}>
+      {children}
+    </code>
+  );
+}
+
+// Fenced blocks arrive as <pre><code>…</code></pre>; only those get syntax
+// highlighting.
+function Pre({ children, ...props }) {
+  if (React.isValidElement<{ children?: unknown; className?: string }>(children)) {
+    let { children: source, className } = children.props;
+    if (typeof source === 'string') {
+      return (
+        <pre {...props}>
+          <code
+            className={className}
+            dangerouslySetInnerHTML={{ __html: highlight(source) }}
+          />
+        </pre>
+      );
+    }
+  }
+  return <pre {...props}>{children}</pre>;
 }
 
 function slugify(str) {
@@ -157,6 +202,7 @@ let components = {
   Callout,
   ProsCard,
   ConsCard,
+  pre: Pre,
   code: Code,
   Table,
 };

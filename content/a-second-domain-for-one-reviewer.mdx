@@ -1,0 +1,97 @@
+---
+title: 'i built a second domain for one reviewer'
+publishedAt: '2026-11-02'
+summary: 'openai could not reach our oauth endpoint during the chatgpt app review, so i put a login proxy on a .com. it got us approved, and for a day it also broke sign-in for everyone else.'
+keywords: 'chatgpt app review, openai apps sdk, mcp oauth, oauth proxy, login proxy, charming, mcp server, oauth discovery, chatgpt connector, rfc 8414'
+---
+
+i'm a founding engineer at [charming](https://usecharming.com). before that the company was [tambo](/blog/generative-ui-at-tambo), and the product started there under the name buildy.
+
+buildy is an [mcp server](https://modelcontextprotocol.io). you ask chatgpt or claude for an app, it builds one, and the app lives at a real url with its own data. inside chatgpt it runs as an app in openai's app directory, and every app there goes through a human review before it's listed. buildy got through that review in may, after one resubmit.
+
+this summer buildy became charming, with a new domain, [charm.ing](https://charm.ing). that's where it got hard. a new name and a new domain meant a new app as far as openai was concerned, so on july 15 we submitted charming from scratch. a week went by with nothing, and our contact at openai escalated it. meanwhile chatgpt users were stuck with a buildy app while everything else we shipped said charming.
+
+the first answer came on august 4: a rejection saying openai was "unable to connect to your mcp server." a follow-up email had the detail. the review team had hit `ERR_ADDRESS_INVALID` on our oauth authorize url, `https://charm.ing/api/auth/mcp/authorize`.
+
+that url worked, and it still does. i spent most of august on it anyway, and made a few mistakes i want to write down.
+
+## the server was fine
+
+i started by checking whether anyone could connect at all. in the two days around the rejection, 26 people had used charming from chatgpt, and one brand new account went from signup to its first app in 58 seconds. the server was reachable for everyone except the person reviewing it.
+
+then i tried to find the reviewer's request in our logs, and couldn't. none of our oauth flow was instrumented. the only event on that whole path was `user_signed_in`, which fires after sign-in succeeds, so a failure at authorize left nothing behind. i'd only instrumented the happy path.
+
+i added events to every step: client registration, authorize, consent, token exchange. the first pass through the logs also flagged four 404s on `/mcp/jwks` as the reviewer's failed attempt. i wasn't convinced, and they turned out to be a bot scanning for weak spots. it switched ip and device on every request, and it also tried to download our `/.env.local` file, which is where secrets usually live. no reviewer does that.
+
+## the reviewer never reached us
+
+`ERR_ADDRESS_INVALID` is chrome refusing a url before it sends anything. our logs were never going to show it.
+
+i had two guesses. one was that someone copied the authorize url out of the dashboard and opened it on its own. the other was that the reviewer's network couldn't resolve ".ing". it's a newer tld, and some corporate dns filters don't handle those.
+
+i wrote back asking for the exact url, a timestamp, the client id and how far the reviewer got. at the end i added a line about the tld: some corporate networks don't resolve ".ing", so if the reviewer can open charm.ing at all, that rules it out.
+
+then i did what i could from our side. i ran the reviewer's whole path against production with their test account, and it worked. i made the bare authorize url return a clear error instead of a confusing login page. we resubmitted.
+
+the next ten days brought three more rejections. the first was fair: an iframe setting we didn't need, so i removed it. the other two, on august 11 and 13, both came down to the reviewer not being able to sign in. those made no sense to us. i had signed in with the exact reviewer account the week before and the whole flow worked. someone on our team called it "somewhat baffling" in the reply.
+
+on august 14 we got a real answer. the reviewer couldn't reach our oauth page at all, so they never got as far as typing in the test credentials. our contact said it might be the ".ing" issue and asked if we had an alternate auth url.
+
+we didn't, but we owned [usecharming.com](https://usecharming.com) for the marketing site. if the reviewer couldn't load charm.ing, nothing i changed on charm.ing would ever reach them. the sign-in pages had to be served from a domain their network could resolve.
+
+## how the proxy worked
+
+the idea was to let a browser do the whole oauth sign-in on usecharming.com, while the .com server made every request to charm.ing on its behalf. the browser never talks to charm.ing. only our server does, and our server can reach it fine.
+
+here's the flow for a reviewer:
+
+1. chatgpt fetches our [oauth discovery document](https://datatracker.ietf.org/doc/html/rfc8414) from charm.ing (chatgpt's servers could always reach us, only the reviewer's browser couldn't). i changed the `authorization_endpoint` in that document to `https://usecharming.com/auth/authorize`. token exchange and client registration stayed on charm.ing, because those are server to server.
+2. the reviewer's browser opens that .com url. the .com server sends the same request to `charm.ing/api/auth/mcp/authorize`, forwarding the query string and body byte for byte and setting `Origin: https://charm.ing`, so charm.ing sees a normal request.
+3. charm.ing answers with a redirect to its sign-in page. before passing that to the browser, the proxy rewrites the `Location` header from `charm.ing/...` to `usecharming.com/...`, so the browser stays on the .com. the sign-in form and the email verification step go through the same loop.
+4. charm.ing sets session cookies along the way, but those cookies belong to charm.ing, and a page on usecharming.com can't use them. so the proxy keeps them itself. it puts them in a cookie jar, encrypts the jar into one usecharming.com cookie, and sends them back to charm.ing on the next request.
+5. when sign-in finishes, charm.ing redirects to chatgpt's `redirect_uri` with the authorization code. the proxy passes that redirect through untouched, and chatgpt exchanges the code with charm.ing directly.
+
+most of the time went into the details. if the proxy re-encoded `state` or `code_challenge` in any way, even when the value meant the same thing, the code exchange at the end failed with no error at all. sending the wrong `Origin`, or rewriting the `callbackURL` that the sign-in form posts, got a 403. and if i had rewritten the final redirect to chatgpt, the grant would have broken, because that url has to match what the client registered.
+
+sign-in wasn't the whole job, though. charming apps render inside chatgpt and fetch their data from charm.ing in the browser. a blocked reviewer would sign in fine and then watch the app fail with `failed to fetch`. so i added a second piece: the .com also relays the app's data api, and the app falls back to it. those calls carry a render token in the `Authorization` header, not a cookie, so relaying them was simpler. it did mean adding usecharming.com as a second connect domain in the middle of a review.
+
+to test it, i needed a browser that couldn't reach charm.ing, like the reviewer's. chrome devtools can block requests by pattern, so i blocked `*charm.ing*` in one tab and connected charming from chatgpt there. sign-in finished on the .com, and the app loaded its data through the relay.
+
+## what it broke
+
+i turned it on on august 17. the change in step 1 was a flag on our production server, and the flag was global. once it was on, every new chatgpt connection signed in through the proxy, not just the reviewer's. that caused three problems i didn't think through before turning it on.
+
+first, people ended up signed out of charming. the proxy kept the charm.ing session cookies in its own encrypted cookie on the .com, so the browser never got a charm.ing session of its own. for a reviewer that's fine, because they only need the oauth flow to finish. but a regular user would connect charming in chatgpt, click through to their dashboard on charm.ing, and be logged out. the same thing made password reset look broken while it was on.
+
+second, everyone shared one rate limit. our auth library allows 3 sign-in attempts every 10 seconds per ip. requests through the proxy came from vercel's servers, and the user's real ip wasn't being forwarded, so every proxied user counted as the same ip.
+
+third, i can't fully undo it. chatgpt reads the discovery document once, when someone adds the connector, and keeps the authorize url it found. turning the flag off only changes things for people who connect afterwards. anyone who connected while it was on still has usecharming.com saved, so the proxy has to keep running for as long as those connectors exist. i'd treated the discovery document like config i could flip back, but once a client has read it, it's closer to a migration.
+
+that third problem changed what i was solving. turning the flag off wasn't enough, because the .com authorize url was going to keep getting traffic from regular users. it had to work well for them too, not just for one reviewer.
+
+my first attempt was narrower. charming gives chatgpt its own mcp endpoint, `charm.ing/mcp/chatgpt`, separate from the one claude and other clients connect to, and each endpoint can serve its own discovery document. so i moved the .com authorize url to the chatgpt endpoint only, and left claude and everything else alone. that reduced the damage, but the chatgpt endpoint is every chatgpt user, not only reviewers. what i actually needed was a way to tell, for each user, whether they could reach charm.ing.
+
+## the fix: let the browser decide
+
+the .com stopped proxying by default. here's what happens now when a browser opens `usecharming.com/auth/authorize`:
+
+1. the .com serves a small page with an inline script, without contacting charm.ing at all.
+2. the script tries to fetch `https://charm.ing/health`, a tiny endpoint with open cors, and waits up to 1.2 seconds.
+3. if the fetch succeeds, the browser can reach charm.ing, so the page sends it to `charm.ing/api/auth/mcp/authorize` with the same query string. sign-in happens on charm.ing like it always did, with real cookies and the user's own ip. the proxy is out of the picture.
+4. if the fetch fails or times out, the browser can't reach charm.ing, and the page continues through the proxy as before.
+
+so the proxy only runs for people who actually need it. that's something only the browser can work out. whether charm.ing resolves depends on the network the user is on, and our server has no way to see that.
+
+the probe shipped with a gap. a fetch blocked by cors counted as unreachable, so a browser that could reach charm.ing fine might still end up on the proxy. the fix is to fetch in `no-cors` mode and treat any response at all as reachable.
+
+i also reversed one decision. i had hidden the google and github buttons on the proxied sign-in page, because social sign-in redirects through charm.ing and a blocked reviewer can't use it. that made sense while only blocked people saw the page. while the flag was global, every chatgpt user saw it, and i was hiding buttons that worked for almost all of them. i put them back with a short note.
+
+the browser check shipped on august 18, a day after the global flag, and we resubmitted that same day. for a reviewer who can't reach charm.ing, the check fails and the proxy takes over, which is the same path i'd tested with devtools. openai approved charming on august 21. that was five weeks and four rejections after we first submitted it.
+
+## what i'd do differently
+
+i'd build the browser check before turning on anything global. i flipped the flag on august 17 to get one reviewer through, and for a day every chatgpt user signed in through a proxy that logged them out of charming. the check shipped the next day anyway. it should have gone first.
+
+i'd also keep putting guesses in emails. the line about ".ing" at the end of my first reply was a hunch i couldn't prove. ten days later, it's what openai pointed back to when they found the reviewer couldn't reach us.
+
+we still don't know why the reviewer's network couldn't load charm.ing. openai never said. usecharming.com still serves the sign-in page, and it has to stay up as long as any connector added during that day is still around.
