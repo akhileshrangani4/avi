@@ -1,7 +1,7 @@
 ---
-title: 'i built a second domain for one reviewer'
+title: 'i fixed a bug i never found'
 publishedAt: '2026-11-02'
-summary: 'openai could not reach our oauth endpoint during the chatgpt app review, so i put a login proxy on a .com. it got us approved, and for a day it also broke sign-in for everyone else.'
+summary: 'openai rejected our chatgpt app four times because a reviewer could not reach our oauth page. i never saw the failure and never learned the cause. a login proxy on a .com got us approved anyway, and for a day it broke sign-in for everyone else.'
 keywords: 'chatgpt app review, openai apps sdk, mcp oauth, oauth proxy, login proxy, charming, mcp server, oauth discovery, chatgpt connector, rfc 8414'
 ---
 
@@ -13,7 +13,7 @@ this summer buildy became charming, with a new domain, [charm.ing](https://charm
 
 the first answer came on august 4: a rejection saying openai was "unable to connect to your mcp server." a follow-up email had the detail. the review team had hit `ERR_ADDRESS_INVALID` on our oauth authorize url, `https://charm.ing/api/auth/mcp/authorize`.
 
-that url worked, and it still does. i spent most of august on it anyway, and made a few mistakes i want to write down.
+that url worked, and it still does. i never saw it fail, and to this day i don't know why it failed for them. i spent most of august guessing, and one of the guesses happened to be close enough. this is how that went, including the mistakes.
 
 ## the server was fine
 
@@ -27,7 +27,7 @@ i added events to every step: client registration, authorize, consent, token exc
 
 `ERR_ADDRESS_INVALID` is chrome refusing a url before it sends anything. our logs were never going to show it.
 
-i had two guesses. one was that someone copied the authorize url out of the dashboard and opened it on its own. the other was that the reviewer's network couldn't resolve ".ing". it's a newer tld, and some corporate dns filters don't handle those.
+i had nothing to check against, so i guessed. one guess was that someone copied the authorize url out of the dashboard and opened it on its own. the other was that the reviewer's network couldn't resolve ".ing". it's a newer tld, and some corporate dns filters don't handle those.
 
 i wrote back asking for the exact url, a timestamp, the client id and how far the reviewer got. at the end i added a line about the tld: some corporate networks don't resolve ".ing", so if the reviewer can open charm.ing at all, that rules it out.
 
