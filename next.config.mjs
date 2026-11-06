@@ -15,8 +15,17 @@ const nextConfig = {
   },
   transpilePackages: ['next-mdx-remote'],
   async redirects() {
+    // Renamed post slugs. Keep old links working.
+    const staticRedirects = [
+      {
+        source: '/blog/a-second-domain-for-one-reviewer',
+        destination: '/blog/i-fixed-a-bug-i-never-found',
+        permanent: true,
+      },
+    ];
+
     if (!process.env.POSTGRES_URL) {
-      return [];
+      return staticRedirects;
     }
 
     let redirects = await sql`
@@ -24,11 +33,14 @@ const nextConfig = {
       FROM redirects;
     `;
 
-    return redirects.map(({ source, destination, permanent }) => ({
-      source,
-      destination,
-      permanent: !!permanent,
-    }));
+    return [
+      ...staticRedirects,
+      ...redirects.map(({ source, destination, permanent }) => ({
+        source,
+        destination,
+        permanent: !!permanent,
+      })),
+    ];
   },
   headers() {
     return [
